@@ -1,11 +1,14 @@
 package com.example.appdereservas.entities;
 
+import lombok.Data;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.util.Objects;
 
+@Data
 @Entity
 public class Gestor {
 
@@ -30,56 +33,4 @@ public class Gestor {
         this.Endereco = endereco;
     }
 
-    public String getName() {
-        return Name;
-    }
-
-    public void setName(String name) {
-        Name = name;
-    }
-
-    public String getCpf() {
-        return Cpf;
-    }
-
-    public void setCpf(String cpf) {
-        Cpf = cpf;
-    }
-
-    public String getEmail() {
-        return Email;
-    }
-
-    public void setEmail(String email) {
-        Email = email;
-    }
-
-    public String getSenha() {
-        return Senha;
-    }
-
-    public void setSenha(String senha) {
-        Senha = senha;
-    }
-
-    public String getEndereco() {
-        return Endereco;
-    }
-
-    public void setEndereco(String endereco) {
-        Endereco = endereco;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Gestor gestor = (Gestor) o;
-        return id.equals(gestor.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
 }

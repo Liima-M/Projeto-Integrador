@@ -1,7 +1,13 @@
 package com.example.appdereservas.entities;
 
-import javax.persistence.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Data;
 
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+
+@Data
 @Entity
 public class Servico {
 
@@ -13,77 +19,30 @@ public class Servico {
     private String Descricao;
     private Double Valor;
 
-    @ManyToOne
-    @JoinColumn(name = "cliente_id")
-    private Cliente cliente;
+    @JsonIgnore
+    @OneToMany ( mappedBy = "servico")
+    private List<Reserva> reserva = new ArrayList<>();
 
-    public Servico() {
-    }
+//    @ManyToOne
+//    @JoinColumn(name = "cliente_id")
+//    private Cliente cliente;
 
-    public Servico(Long id, String nome, String categoria, String descricao, Double valor, Cliente cliente) {
-        this.id = id;
-        this.Nome = nome;
-        this.Categoria = categoria;
-        this.Descricao = descricao;
-        this.Valor = valor;
-        this.cliente = cliente;
-    }
 
-    public Long getId() {
-        return id;
-    }
+    public Servico(){}
 
-    public String getNome() {
-        return Nome;
-    }
-
-    public void setNome(String nome) {
+    public Servico(String nome, String categoria, String descricao, Double valor) {
         Nome = nome;
-    }
-
-    public String getCategoria() {
-        return Categoria;
-    }
-
-    public void setCategoria(String categoria) {
         Categoria = categoria;
-    }
-
-    public String getDescricao() {
-        return Descricao;
-    }
-
-    public void setDescricao(String descricao) {
         Descricao = descricao;
-    }
-
-    public Double getValor() {
-        return Valor;
-    }
-
-    public void setValor(Double valor) {
         Valor = valor;
     }
 
-    public Cliente getCliente() {
-        return cliente;
+    public Servico(Long id, String nome, String categoria, String descricao, Double valor) {
+        this.id = id;
+        Nome = nome;
+        Categoria = categoria;
+        Descricao = descricao;
+        Valor = valor;
     }
 
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
-    }
-
-    @Override
-    public String toString() {
-        return "Serviço{" +
-                "Nome='" + Nome + '\'' +
-                ", Categoria='" + Categoria + '\'' +
-                ", Descricao='" + Descricao + '\'' +
-                ", Valor=" + Valor +
-                '}';
-    }
-
-   /* Recepionista = new ArrayList<>{
-
-    }*/
 }

@@ -3,11 +3,9 @@ package com.example.appdereservas.resources;
 import com.example.appdereservas.entities.Cliente;
 import com.example.appdereservas.services.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -16,18 +14,44 @@ import java.util.List;
 public class ClienteResource {
 
     @Autowired
-    private ClienteService service;
+    private ClienteService clienteService;
+
 
     @GetMapping
-    public ResponseEntity<List<Cliente>> findAll(){
-        List<Cliente> list = service.findAll();
-
-        return ResponseEntity.ok().body(list);
+    @ResponseStatus(HttpStatus.FOUND)
+    public List<Cliente> getCliente(){
+        return  clienteService.findAll();
     }
 
-    @GetMapping(value = "/{id}")
-    public ResponseEntity<Cliente> findById(@PathVariable Long id){
-        Cliente obj = service.findById(id);
-        return ResponseEntity.ok().body(obj);
+    @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.FOUND)
+    public Cliente findById(@PathVariable Long id){
+        return clienteService.findById(id);
     }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public Cliente insert(@RequestBody Cliente c){
+        return clienteService.insert(c);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public void delete(@PathVariable Long id){
+       clienteService.delete(id);
+    }
+
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public Cliente update(@PathVariable Long id, @RequestBody Cliente c){
+        return c = clienteService.update(id,c);
+    }
+
+    @PutMapping("/reservar/{idReserva}/{idCliente}")
+    @ResponseStatus(HttpStatus.OK)
+    public void bookReserva( @PathVariable Long idReserva, @PathVariable Long idCliente){
+        clienteService.bookReserva(idReserva, idCliente);
+
+    }
+
 }

@@ -4,11 +4,9 @@ import com.example.appdereservas.entities.Cliente;
 import com.example.appdereservas.entities.Gestor;
 import com.example.appdereservas.services.GestorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -17,19 +15,38 @@ import java.util.List;
 public class GestorResource {
 
     @Autowired
-    private GestorService service;
+    private GestorService gestorService;
+
 
     @GetMapping
-    public ResponseEntity<List<Gestor>> findAll(){
-        List<Gestor> list = service.findAll();
-
-        return ResponseEntity.ok().body(list);
+    @ResponseStatus(HttpStatus.FOUND)
+    public List<Gestor> getGestor(){
+        return  gestorService.findAll();
     }
 
-    @GetMapping(value = "/{id}")
-    public ResponseEntity<Gestor> findById(@PathVariable Long id){
-        Gestor obj = service.findById(id);
-        return ResponseEntity.ok().body(obj);
+    @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.FOUND)
+    public Gestor findById(@PathVariable Long id){
+        return gestorService.findById(id);
     }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public Gestor insert(@RequestBody Gestor c){
+        return gestorService.insert(c);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public void delete(@PathVariable Long id){
+        gestorService.delete(id);
+    }
+
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public Gestor update(@PathVariable Long id, @RequestBody Gestor c){
+        return c = gestorService.update(id,c);
+    }
+
 
 }

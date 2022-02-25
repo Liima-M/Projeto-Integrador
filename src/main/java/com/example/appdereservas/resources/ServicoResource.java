@@ -2,13 +2,12 @@ package com.example.appdereservas.resources;
 
 import com.example.appdereservas.entities.Cliente;
 import com.example.appdereservas.entities.Servico;
+import com.example.appdereservas.entities.Servico;
 import com.example.appdereservas.services.ServicoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -17,18 +16,36 @@ import java.util.List;
 public class ServicoResource {
 
     @Autowired
-    private ServicoService service;
+    private ServicoService servicoService;
 
     @GetMapping
-    public ResponseEntity<List<Servico>> findAll(){
-        List<Servico> list = service.findAll();
-
-        return ResponseEntity.ok().body(list);
+    @ResponseStatus(HttpStatus.FOUND)
+    public List<Servico> getServico(){
+        return  servicoService.findAll();
     }
 
-    @GetMapping(value = "/{id}")
-    public ResponseEntity<Servico> findById(@PathVariable Long id){
-        Servico obj = service.findById(id);
-        return ResponseEntity.ok().body(obj);
+    @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.FOUND)
+    public Servico findById(@PathVariable Long id){
+        return servicoService.findById(id);
     }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public Servico insert(@RequestBody Servico c){
+        return servicoService.insert(c);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public void delete(@PathVariable Long id){
+        servicoService.delete(id);
+    }
+
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public Servico update(@PathVariable Long id, @RequestBody Servico c){
+        return c = servicoService.update(id,c);
+    }
+
 }
